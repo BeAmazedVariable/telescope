@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Linking, Pressable } from 'react-native';
 import { useState, useEffect } from 'react';
-import quotes from '../../student-quotes';
+import supabase from '../../api/supabase_client';
 
 const styles = StyleSheet.create({
   container: {
@@ -19,10 +19,30 @@ const styles = StyleSheet.create({
 });
 
 const BannerText = () => {
-  const [studentQuote, setStudentQuote] = useState(quotes[0]);
+  const [studentQuote, setStudentQuote] = useState([]);
+
+  // const x = fetch('', { headers: {
+  //   apiKey: process.env.ANON_key;
+  // }})
+  // const quotes = await x.json()
+
+  // async function fetchStudentQuotes() {
+  //   console.log('starting');
+  //   const { data, status, statusText, error } = await supabase.from('quotes').select('*');
+  //   console.log('fetching supabase');
+  //   if (error) {
+  //     console.log('error', error);
+  //     console.log('status', status);
+  //     console.log('text', statusText);
+  //   } else {
+  //     console.log('data', data);
+  //     setStudentQuote(data);
+  //   }
+  // }
 
   useEffect(() => {
-    setStudentQuote(quotes[Math.floor(Math.random() * quotes.length)]);
+    // fetchStudentQuotes();
+    // setStudentQuote(studentQuote[Math.floor(Math.random() * studentQuote.length)]);
   }, []);
 
   return (
@@ -38,10 +58,14 @@ const BannerText = () => {
       >
         Telescope
       </Text>
-      <Pressable style={styles.studentQuote} onPress={() => Linking.openURL(studentQuote.url)}>
-        <Text style={styles.studentQuoteText}>"{studentQuote.quote}"</Text>
-        <Text style={styles.studentQuoteText}> {studentQuote.author}</Text>
-      </Pressable>
+      {studentQuote.length ? (
+        <Pressable
+          style={styles.studentQuote}
+          onPress={() => Linking.openURL(studentQuote[0].blog_url)}
+        >
+          <Text style={styles.studentQuoteText}> {studentQuote[0].author_name}</Text>
+        </Pressable>
+      ) : null}
     </View>
   );
 };
