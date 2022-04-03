@@ -2,6 +2,7 @@ import React from 'react';
 import useSWR from 'swr';
 import { useWindowDimensions, View } from 'react-native';
 import RenderHtml from 'react-native-render-html';
+import { tagsStyles, baseStyles } from '../../styles/post';
 
 export default function Post({ url }) {
   const { data: post, error } = useSWR(url, (resource, init) =>
@@ -21,8 +22,13 @@ export default function Post({ url }) {
   };
 
   return (
-    <View className="telescope-post-content">
-      <RenderHtml contentWidth={width} source={source} />
+    <View>
+      <RenderHtml
+        contentWidth={width}
+        source={source}
+        tagsStyles={tagsStyles}
+        baseStyle={baseStyles}
+      />
     </View>
   );
 }

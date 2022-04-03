@@ -1,9 +1,3 @@
-:root {
-  --zoomWidthFactor: 90%;
-  --mobileZoomWidthFactor: 100%; /* Used in the breakpoint(media-query) below */
-  --zoomedImageOverlayColor: rgba(255, 255, 255, 0.8);
-}
-
 .telescope-post-content {
   font-size: 1.8rem;
   line-height: 1.6;
@@ -29,32 +23,6 @@
   display: block;
   height: auto;
   cursor: zoom-in;
-}
-
-.zoomed-image-container {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 1200;
-  overflow: hidden;
-  background-color: var(--zoomedImageOverlayColor);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  backdrop-filter: blur(5px);
-  cursor: zoom-out;
-  animation: scaleFadeIn 0.15s ease-in-out;
-}
-
-.zoomed-image-container img {
-  padding: 0;
-  width: var(--zoomWidthFactor);
-  max-height: var(--zoomWidthFactor);
-  object-fit: contain;
-  border-radius: 5px;
 }
 
 .telescope-post-content div > a > img {
@@ -160,10 +128,6 @@
   .telescope-post-content pre {
     padding: 0;
   }
-  .zoomed-image-container img {
-    width: var(--mobileZoomWidthFactor);
-    max-height: var(--mobileZoomWidthFactor);
-  }
 }
 
 /**
@@ -192,52 +156,18 @@
 /**
  * For YouTube, Vimeo <iframe> elements, we wrap them
  * in a <div> so we can expand them to fill the width.
- * See https://css-tricks.com/fluid-width-video/#article-header-id-0
+ * See https://css-tricks.com/fluid-width-video/#article-header-id-8
  */
-.telescope-post-content .iframe-video-wrapper {
+class style .iframe-video-wrapper {
   position: relative;
   padding-bottom: 56.25%; /* 16:9 */
   height: 0;
 }
 
-.telescope-post-content .iframe-video-wrapper iframe {
+iframe {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-}
-
-@keyframes scaleFadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes scaleFadeOut {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-}
-.zoom-out {
-  animation: scaleFadeOut 0.15s ease-in-out;
-}
-
-@keyframes fade-in-out {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 }
