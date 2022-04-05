@@ -1,8 +1,28 @@
 import React from 'react';
-import { Text, View, Button, ScrollView } from 'react-native';
+import { View, Button, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useSWRInfinite from 'swr/infinite';
 import Post from './Post';
+
+const styles = StyleSheet.create({
+  container: {
+    height: '100vh',
+  },
+  loadMore: {
+    // height: 'auto',
+    //  padding: 10,
+  },
+  posts: {
+    flex: 1,
+    height: 'auto',
+    marginHorizontal: 10,
+    padding: 10,
+    paddingBottom: 50,
+  },
+  scrollView: {
+    flexGrow: 1,
+  },
+});
 
 const POST_URL = 'https://dev.api.telescope.cdot.systems/v1/posts';
 
@@ -18,27 +38,28 @@ export default function Posts() {
   );
 
   if (error || !pages || !pages.length) {
-    return <></>;
+    return null;
   }
 
   const renderPage = (page) => {
     return (
       <>
         {page.map((post) => (
-          <Post key={post.id} url={post.url}></Post>
+          <Post key={post.id} url={post.url} />
         ))}
       </>
     );
   };
 
   return (
-    <SafeAreaView>
-      <ScrollView style={{ height: 1000 }}>
-        <Button onPress={() => setSize(size + 1)}>get more</Button>
-        <Text>{pages.length * 30}</Text>
-        {pages.map((page, i) => (
-          <View key={i}>{renderPage(page)}</View>
-        ))}
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.posts}>
+          {pages.map((page) => (
+            <View key={page[0].id}>{renderPage(page)}</View>
+          ))}
+          <Button title="Load More" onPress={() => setSize(size + 1)} style={styles.loadMore} />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
