@@ -5,15 +5,25 @@ import RenderHtml from 'react-native-render-html';
 import { tagsStyles, baseStyles, styles } from '../../styles/post';
 
 export default function Post({ url }) {
-  const { data: post, error } = useSWR(url, (resource, init) =>
-    fetch(resource, init).then((res) => res.json())
-  );
+  const { data: post, error } = useSWR(url);
   const { width } = useWindowDimensions();
-  if (error || !post) {
-    console.log(error);
-    return null;
+
+  if (error) {
+    console.error(error);
+    return (
+      <View style={styles.post}>
+        <Text>Error Loading Post</Text>
+      </View>
+    );
   }
-  console.log(post.id);
+
+  if (!post) {
+    return (
+      <View style={styles.post}>
+        <Text>Loading</Text>
+      </View>
+    );
+  }
 
   const source = {
     html: `
@@ -22,7 +32,7 @@ export default function Post({ url }) {
   };
 
   return (
-    <View>
+    <View style={styles.post}>
       <Text style={styles.title}>{post.title}</Text>
       <RenderHtml
         contentWidth={width}

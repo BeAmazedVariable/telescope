@@ -8,19 +8,20 @@ const styles = StyleSheet.create({
   container: {
     height: '100vh',
   },
-  loadMore: {
-    // height: 'auto',
-    //  padding: 10,
-  },
   posts: {
     flex: 1,
     height: 'auto',
-    marginHorizontal: 10,
-    padding: 10,
-    paddingBottom: 50,
+    marginBottom: 50,
   },
   scrollView: {
     flexGrow: 1,
+  },
+  separator: {
+    backgroundColor: '#9f9f9f',
+    height: 1,
+    marginHorizontal: 'auto',
+    marginVertical: '1rem',
+    width: '80%',
   },
 });
 
@@ -32,10 +33,7 @@ export default function Posts() {
     size,
     setSize,
     error,
-  } = useSWRInfinite(
-    (index) => `${POST_URL}?page=${index + 1}`,
-    (resource, init) => fetch(resource, init).then((res) => res.json())
-  );
+  } = useSWRInfinite((index) => `${POST_URL}?page=${index + 1}&per_page=2`);
 
   if (error || !pages || !pages.length) {
     return null;
@@ -45,7 +43,10 @@ export default function Posts() {
     return (
       <>
         {page.map((post) => (
-          <Post key={post.id} url={post.url} />
+          <View key={post.id}>
+            <Post url={post.url} />
+            <View style={styles.separator} />
+          </View>
         ))}
       </>
     );
